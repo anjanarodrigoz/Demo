@@ -52,18 +52,18 @@ public class CustomerFormController implements Initializable {
     public void reloadOnAction(ActionEvent event) {
 
         loadCustomerTable();
+        customerTable.refresh();
 
     }
 
     @FXML
     public void saveOnAction(ActionEvent event) {
 
-        Customer customer = new Customer(
-                txtId.getText(),
-                txtName.getText(),
-                txtAddress.getText(),
-                Double.parseDouble(txtSalary.getText())
-        );
+        Customer customer = getInputCustomer();
+
+        if(customer==null){
+            return;
+        }
 
         String query = "INSERT INTO customer (name,address,salary) VALUES("
                 +"'"+customer.getName()+"','"+
@@ -73,13 +73,15 @@ public class CustomerFormController implements Initializable {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-           Connection connection =  DriverManager.getConnection("jdbc:mysql://localhost:3306/shop","root","12345678");
-           Statement stm = connection.createStatement();
-           int result = stm.executeUpdate(query);
-           if(result>0){
-               new Alert(Alert.AlertType.INFORMATION,"Customer saved").show();
-           }
-           connection.close();
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/shop", "root", "12345678");
+            Statement stm = connection.createStatement();
+            int result = stm.executeUpdate(query);
+            if (result > 0) {
+                new Alert(Alert.AlertType.INFORMATION, "Customer saved").show();
+            }
+            connection.close();
+        } catch (SQLIntegrityConstraintViolationException e){
+          new Alert(Alert.AlertType.ERROR,"Duplicate Entry").show();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
@@ -93,12 +95,11 @@ public class CustomerFormController implements Initializable {
 
     public void updateOnAction(ActionEvent event) {
 
-        Customer customer = new Customer(
-                txtId.getText(),
-                txtName.getText(),
-                txtAddress.getText(),
-                Double.parseDouble(txtSalary.getText())
-        );
+       Customer customer =  getInputCustomer();
+
+        if(customer == null){
+            return;
+        }
 
         String query = "UPDATE customer SET " +
                 "name = '"+customer.getName()+"',"+
@@ -124,6 +125,25 @@ public class CustomerFormController implements Initializable {
 
     }
 
+    private Customer getInputCustomer() {
+
+
+
+        try {
+            Customer customer = new Customer(
+                    txtId.getText(),
+                    txtName.getText(),
+                    txtAddress.getText(),
+                    Double.parseDouble(txtSalary.getText())
+            );
+            return customer;
+        }catch (NumberFormatException e){
+            new Alert(Alert.AlertType.ERROR,"add Correct salary amount").show();
+
+            return null;
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -139,8 +159,7 @@ public class CustomerFormController implements Initializable {
     }
 
     private void setData(CustomerTm selectedCustomer) {
-
-        txtId.setText(selectedCustomer.getId());
+        txtId.setText(selectedCustomer.getId()== null ? "" : selectedCustomer.getId());
         txtName.setText(selectedCustomer.getName());
         txtAddress.setText(selectedCustomer.getAddress());
         txtSalary.setText(selectedCustomer.getSalary()+"");
