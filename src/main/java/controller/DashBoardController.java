@@ -14,7 +14,7 @@ public class DashBoardController {
 
 
     public void customerBtnOnAction(ActionEvent actionEvent) {
-           Stage stage =  (Stage)dashBoardPane.getScene().getWindow();
+           Stage stage =  new Stage();
         try {
             stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../view/CustomerForm.fxml"))));
             stage.show();

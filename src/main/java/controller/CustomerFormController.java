@@ -1,5 +1,6 @@
 package controller;
 
+import db.Database;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -48,6 +49,9 @@ public class CustomerFormController implements Initializable {
     @FXML
     private TableView<CustomerTm> customerTable;
 
+
+    private Connection connection;
+
     @FXML
     public void reloadOnAction(ActionEvent event) {
 
@@ -72,8 +76,7 @@ public class CustomerFormController implements Initializable {
 
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/shop", "root", "12345678");
+
             Statement stm = connection.createStatement();
             int result = stm.executeUpdate(query);
             if (result > 0) {
@@ -82,7 +85,7 @@ public class CustomerFormController implements Initializable {
             connection.close();
         } catch (SQLIntegrityConstraintViolationException e){
           new Alert(Alert.AlertType.ERROR,"Duplicate Entry").show();
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -109,15 +112,14 @@ public class CustomerFormController implements Initializable {
 
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection =  DriverManager.getConnection("jdbc:mysql://localhost:3306/shop","root","12345678");
+
             Statement stm = connection.createStatement();
             int result = stm.executeUpdate(query);
             if(result>0){
                 new Alert(Alert.AlertType.INFORMATION,"Customer Updated").show();
             }
             connection.close();
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch ( SQLException e) {
             e.printStackTrace();
         }
 
@@ -146,6 +148,9 @@ public class CustomerFormController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        connection = Database.getInstance().getConnection();
+
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
@@ -172,8 +177,6 @@ public class CustomerFormController implements Initializable {
         ObservableList<CustomerTm> tmList = FXCollections.observableArrayList();
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection =  DriverManager.getConnection("jdbc:mysql://localhost:3306/shop","root","12345678");
             Statement stm = connection.createStatement();
             ResultSet result = stm.executeQuery(query);
 
@@ -194,11 +197,11 @@ public class CustomerFormController implements Initializable {
                 });
                 tmList.add(customerTm);
             }
-            connection.close();
+
             customerTable.setItems(tmList);
 
 
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -209,8 +212,7 @@ public class CustomerFormController implements Initializable {
 
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection =  DriverManager.getConnection("jdbc:mysql://localhost:3306/shop","root","12345678");
+
             Statement stm = connection.createStatement();
             int result = stm.executeUpdate(query);
             if(result>0){
@@ -219,8 +221,9 @@ public class CustomerFormController implements Initializable {
             else{
                 new Alert(Alert.AlertType.ERROR,"Something went wrong").show();
             }
-            connection.close();
-        } catch (ClassNotFoundException | SQLException e) {
+
+
+        } catch (  SQLException e) {
             e.printStackTrace();
         }
 
