@@ -1,0 +1,49 @@
+/* styles.css */
+
+.button {
+    -fx-background-color: #4CAF50; /* Green */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 16px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #45a049; /* Darker Green */
+}
+
+.button:pressed {
+    -fx-background-color: #367b36; /* Darkest Green */
+}
+
+VBox {
+    -fx-spacing: 20;
+}
+
+#itemTable {
+    -fx-background-color: #f2f2f2; /* Light Gray */
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
+}
+
+#itemTable .column-header-background {
+    -fx-background-color: #4CAF50; /* Green */
+}
+
+#itemTable .column-header-background .label {
+    -fx-text-fill: black;
+}
+
+#itemTable .table-row-cell {
+    -fx-background-color: #ffffff; /* White */
+}
+
+#itemTable .table-row-cell:odd {
+    -fx-background-color: #f9f9f9; /* Light Gray */
+}
+
+#itemTable .table-row-cell:selected {
+    -fx-background-color: #e0e0e0; /* Lighter Gray */
+}
