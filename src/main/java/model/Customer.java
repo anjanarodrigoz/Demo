@@ -1,64 +1,19 @@
 package model;
 
-public class Customer {
+import dto.CustomerDto;
 
-    private String id;
-    private String name;
-    private String address;
+import java.sql.SQLException;
+import java.util.List;
 
-    private double salary;
+public interface Customer {
 
+    CustomerDto getCustomer(String customerId) throws SQLException;
 
-    public Customer() {
-    }
+    boolean saveCustomer(CustomerDto customerDto) throws SQLException;
 
-    public Customer(String id, String name, String address, double salary) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.salary = salary;
-    }
+    boolean updateCustomer(CustomerDto customerDto) throws SQLException;
 
-    public String getId() {
-        return id;
-    }
+    boolean deleteCustomer(String customerId) throws SQLException;
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public double getSalary() {
-        return salary;
-    }
-
-    public void setSalary(double salary) {
-        this.salary = salary;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", address='" + address + '\'' +
-                ", salary=" + salary +
-                '}';
-    }
+    List<CustomerDto> getAllCustomers();
 }

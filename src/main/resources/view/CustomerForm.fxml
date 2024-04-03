@@ -1,29 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import com.gluonhq.charm.glisten.control.Icon?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="628.0" prefWidth="679.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CustomerFormController">
-   <children>
-      <TextField fx:id="txtId" layoutX="23.0" layoutY="46.0" prefHeight="26.0" prefWidth="123.0" promptText="Customer ID" />
-      <TextField fx:id="txtName" layoutX="166.0" layoutY="46.0" prefHeight="26.0" prefWidth="123.0" promptText="Customer Name" />
-      <TextField fx:id="txtAddress" layoutX="315.0" layoutY="46.0" prefHeight="26.0" prefWidth="123.0" promptText="Customer Address" />
-      <TextField fx:id="txtSalary" layoutX="463.0" layoutY="46.0" prefHeight="26.0" prefWidth="123.0" promptText="Customer Salary" />
-      <Button layoutX="408.0" layoutY="99.0" mnemonicParsing="false" onAction="#updateOnAction" prefHeight="33.0" prefWidth="87.0" text="Update" />
-      <Button layoutX="536.0" layoutY="98.0" mnemonicParsing="false" onAction="#saveOnAction" prefHeight="33.0" prefWidth="87.0" text="Save" />
-      <TableView fx:id="customerTable" layoutX="45.0" layoutY="149.0" prefHeight="407.0" prefWidth="596.0">
-        <columns>
-          <TableColumn fx:id="colId" prefWidth="92.41764068603516" text="Customer ID" />
-          <TableColumn fx:id="colName" prefWidth="162.2691650390625" text="Customer Name" />
-            <TableColumn fx:id="colAddress" prefWidth="154.41766357421875" text="Customer Address" />
-            <TableColumn fx:id="colSalary" prefWidth="107.38742065429688" text="Customer Salary" />
-            <TableColumn fx:id="colOption" minWidth="0.0" prefWidth="76.0" text="Option" />
-        </columns>
-      </TableView>
-      <Button layoutX="544.0" layoutY="577.0" mnemonicParsing="false" onAction="#reloadOnAction" prefHeight="33.0" prefWidth="87.0" text="Reload" />
-   </children>
-</AnchorPane>
+<BorderPane prefHeight="496.0" prefWidth="682.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CustomerFormController">
+   <center>
+      <GridPane BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <TableView fx:id="customerTable" prefHeight="389.0" prefWidth="682.0">
+              <columns>
+                <TableColumn fx:id="colId" prefWidth="95.0" text="ID" />
+                <TableColumn fx:id="colName" prefWidth="260.0" text="Name" />
+                  <TableColumn fx:id="colMobile" prefWidth="166.0" text="Mobile Number" />
+                  <TableColumn fx:id="colEmail" minWidth="0.0" prefWidth="159.0" text="Email Address" />
+              </columns>
+            </TableView>
+         </children>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding>
+      </GridPane>
+   </center>
+   <top>
+      <GridPane minHeight="20.0" minWidth="200.0" prefWidth="679.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="168.0" />
+          <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="514.0" minWidth="20.0" prefWidth="514.0" />
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="514.0" minWidth="20.0" prefWidth="514.0" />
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="514.0" minWidth="20.0" prefWidth="514.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+      <!--      <Icon content="ARROW_BACK" layoutX="14.0" layoutY="18.0" />-->
+            <JFXButton mnemonicParsing="false" onAction="#addCustomerOnAction" prefHeight="32.0" prefWidth="124.0" style="-fx-background-color: #2596be" text="+ Add Customer" textFill="WHITE" GridPane.columnIndex="3">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
+               <font>
+                  <Font name="Arial Bold" size="13.0" />
+               </font>
+            </JFXButton>
+            <Icon fx:id="backButton" content="ARROW_BACK" onMouseClicked="#backButtonClicked" prefHeight="32.0" prefWidth="31.0" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <padding>
+            <Insets bottom="10.0" top="30.0" />
+         </padding>
+      </GridPane>
+   </top>
+</BorderPane>
