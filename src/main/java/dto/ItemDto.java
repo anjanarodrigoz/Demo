@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
+
 
 public class ItemDto {
 
@@ -15,5 +15,10 @@ public class ItemDto {
     private String name;
     private int qty;
     private double price;
+
+
+    public String toString(){
+        return code;
+    }
 
 }

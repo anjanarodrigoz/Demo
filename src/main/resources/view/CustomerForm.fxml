@@ -16,15 +16,16 @@
             <TableColumn fx:id="colEmail" minWidth="0.0" prefWidth="156.04241943359375" text="Email Address" />
         </columns>
     </TableView>
-   <JFXTextField layoutX="49.0" layoutY="31.0" promptText="Customer ID" />
-   <JFXTextField layoutX="435.0" layoutY="30.0" promptText="Mobile Number" />
-   <JFXTextField layoutX="236.0" layoutY="30.0" prefHeight="26.0" prefWidth="165.0" promptText="Customer Name" />
-   <JFXTextField layoutX="49.0" layoutY="74.0" promptText="E-mail" />
-   <JFXButton layoutX="681.0" layoutY="42.0" prefHeight="30.0" prefWidth="97.0" style="-fx-background-color: #12A15A;" text="Add " textFill="WHITE">
+    <JFXTextField fx:id="customerIdField" layoutX="49.0" layoutY="31.0" promptText="Customer ID"/>
+    <JFXTextField fx:id="mobileNumberField" layoutX="435.0" layoutY="30.0" promptText="Mobile Number" />
+    <JFXTextField fx:id="customerNameField" layoutX="236.0" layoutY="30.0" prefHeight="26.0" prefWidth="165.0" promptText="Customer Name" />
+    <JFXTextField fx:id="emailField" layoutX="49.0" layoutY="74.0" promptText="E-mail" />
+
+    <JFXButton onAction="#addCustomerOnAction" layoutX="681.0" layoutY="42.0" prefHeight="30.0" prefWidth="97.0" style="-fx-background-color: #12A15A;" text="Add " textFill="WHITE">
       <font>
          <Font name="Arial Hebrew Scholar Bold" size="13.0" />
       </font>
    </JFXButton>
-   <JFXButton layoutX="680.0" layoutY="86.0" prefHeight="30.0" prefWidth="97.0" style="-fx-background-color: #FFB100;" text="Update" textFill="WHITE" />
-   <JFXButton layoutX="679.0" layoutY="130.0" prefHeight="30.0" prefWidth="97.0" style="-fx-background-color: #FF0000;" text="Delete" textFill="WHITE" />
+   <JFXButton onAction="#deleteCustomerOnAction" layoutX="680.0" layoutY="86.0" prefHeight="30.0" prefWidth="97.0" style="-fx-background-color: #FFB100;" text="Update" textFill="WHITE" />
+   <JFXButton onAction="#updateCustomerOnAction" layoutX="679.0" layoutY="130.0" prefHeight="30.0" prefWidth="97.0" style="-fx-background-color: #FF0000;" text="Delete" textFill="WHITE" />
 </AnchorPane>

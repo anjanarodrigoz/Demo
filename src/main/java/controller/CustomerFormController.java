@@ -1,5 +1,6 @@
 package controller;
 import com.gluonhq.charm.glisten.control.Icon;
+import com.jfoenix.controls.JFXTextField;
 import db.Database;
 import dto.CustomerDto;
 import javafx.collections.FXCollections;
@@ -7,6 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -28,6 +30,10 @@ import java.util.ResourceBundle;
 public class CustomerFormController implements Initializable {
 
     public BorderPane customerHomePage;
+    public JFXTextField customerIdField;
+    public JFXTextField mobileNumberField;
+    public JFXTextField customerNameField;
+    public JFXTextField emailField;
     @FXML
     private Icon backButton;
 
@@ -58,8 +64,23 @@ public class CustomerFormController implements Initializable {
     @FXML
     void addCustomerOnAction(ActionEvent event) {
 
+        CustomerDto customerDto = getInputCustomer();
+        try {
+            customer.saveCustomer(customerDto);
+            loadCustomer();
+            new Alert(Alert.AlertType.INFORMATION,"Customer added successfully").show();
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR,"Customer added Failed").show();
+        }
 
+    }
 
+    private CustomerDto getInputCustomer() {
+
+        return new CustomerDto(customerIdField.getText(),
+                customerNameField.getText(),
+                mobileNumberField.getText(),
+                emailField.getText());
     }
 
     @FXML
@@ -84,6 +105,8 @@ public class CustomerFormController implements Initializable {
 
     private void loadCustomer() {
 
+        tmList.clear();
+
        List<CustomerDto> customerList =  customer.getAllCustomers();
 
        for (CustomerDto customerDto : customerList){
@@ -93,6 +116,18 @@ public class CustomerFormController implements Initializable {
 
 
         customerTable.setItems(tmList);
+    }
+
+    public void deleteCustomerOnAction(ActionEvent actionEvent) {
+
+        try {
+            customer.deleteCustomer(customerIdField.getText());
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR,"Customer added Failed").show();
+        }
+    }
+
+    public void updateCustomerOnAction(ActionEvent actionEvent) {
     }
 }
 

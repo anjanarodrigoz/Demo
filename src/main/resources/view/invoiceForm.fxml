@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="602.0" prefWidth="594.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.InvoiceFormController">
+    <Label fx:id ="lblCustomerName" layoutX="391.0" layoutY="12.0" prefHeight="31.0" prefWidth="183.0" styleClass="header-label" text="Customer Name" />
+    <Label layoutX="14.0" layoutY="64.0" styleClass="label" text="Item Code" />
+    <ComboBox fx:id="cmbItem" layoutX="123.0" layoutY="59.0" prefHeight="27.0" prefWidth="145.0" promptText="Select Item" styleClass="combo-box" />
+    <Label layoutX="13.0" layoutY="104.0" styleClass="label" text="Item name" />
+    <Label layoutX="196.0" layoutY="104.0" styleClass="label" text="Unit Price:" />
+    <TextField fx:id="unitPrice" layoutX="196.0" layoutY="128.0" prefHeight="26.0" prefWidth="115.0" styleClass="text-field" />
+    <Button fx:id="addToCartButton" layoutX="475.0" layoutY="120.0" onAction="#addToCart" styleClass="button" text="Add to Cart" />
+    <TableView fx:id="cartTable" layoutY="172.0" prefHeight="376.0" prefWidth="594.0" styleClass="table-view">
+        <columns>
+            <TableColumn fx:id="colItemId" text="Item ID" />
+            <TableColumn fx:id="colItemName" prefWidth="104.0" text="Item Name" />
+            <TableColumn fx:id="colUnitPrice" prefWidth="71.0" text="Unit Price" />
+            <TableColumn fx:id="colQuantity" prefWidth="65.0" text="Qty" />
+            <TableColumn fx:id="colAmount" prefWidth="89.0" text="Amount" />
+            <TableColumn fx:id="colOptions" prefWidth="92.0" text="Options" />
+        </columns>
+    </TableView>
+    <Label layoutX="17.0" layoutY="570.0" styleClass="label" text="Total:" />
+    <Label fx:id="totalLabel" layoutX="77.0" layoutY="570.0" styleClass="total-label" text="0.00" />
+    <Button fx:id="placeOrderButton" layoutX="482.0" layoutY="555.0" onAction="#placeOrder" styleClass="button" text="Place Order" />
+    <Label layoutX="340.0" layoutY="104.0" prefHeight="18.0" prefWidth="26.0" styleClass="label" text="Qty:" />
+    <TextField fx:id="quantity" layoutX="340.0" layoutY="129.0" prefHeight="26.0" prefWidth="61.0" styleClass="text-field" />
+    <Label layoutX="14.0" layoutY="27.0" styleClass="label" text="Customer Code" />
+    <ComboBox fx:id="cmbCustomer" layoutX="123.0" layoutY="22.0" prefHeight="28.0" prefWidth="183.0" promptText="Select Customer" styleClass="combo-box" />
+    <TextField fx:id="txtItemName" editable="false" layoutX="13.0" layoutY="129.0" styleClass="text-field" />
+</AnchorPane>
