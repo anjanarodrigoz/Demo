@@ -16,7 +16,7 @@
     <Label layoutX="196.0" layoutY="104.0" styleClass="label" text="Unit Price:" />
     <TextField fx:id="unitPrice" layoutX="196.0" layoutY="128.0" prefHeight="26.0" prefWidth="115.0" styleClass="text-field" />
     <Button fx:id="addToCartButton" layoutX="475.0" layoutY="120.0" onAction="#addToCart" styleClass="button" text="Add to Cart" />
-    <TableView fx:id="cartTable" layoutY="172.0" prefHeight="376.0" prefWidth="594.0" styleClass="table-view">
+    <TableView fx:id="cartTable" layoutY="172.0" prefHeight="376.0" prefWidth="594.0">
         <columns>
             <TableColumn fx:id="colItemId" text="Item ID" />
             <TableColumn fx:id="colItemName" prefWidth="104.0" text="Item Name" />
