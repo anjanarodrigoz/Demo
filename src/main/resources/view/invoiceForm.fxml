@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane prefHeight="602.0" prefWidth="594.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.InvoiceFormController">
-    <Label fx:id ="lblCustomerName" layoutX="391.0" layoutY="12.0" prefHeight="31.0" prefWidth="183.0" styleClass="header-label" text="Customer Name" />
+    <Label fx:id="lblCustomerName" alignment="CENTER_RIGHT" layoutX="391.0" layoutY="44.0" prefHeight="31.0" prefWidth="183.0" styleClass="header-label" text="Customer Name" />
     <Label layoutX="14.0" layoutY="64.0" styleClass="label" text="Item Code" />
     <ComboBox fx:id="cmbItem" layoutX="123.0" layoutY="59.0" prefHeight="27.0" prefWidth="145.0" promptText="Select Item" styleClass="combo-box" />
     <Label layoutX="13.0" layoutY="104.0" styleClass="label" text="Item name" />
@@ -34,4 +34,5 @@
     <Label layoutX="14.0" layoutY="27.0" styleClass="label" text="Customer Code" />
     <ComboBox fx:id="cmbCustomer" layoutX="123.0" layoutY="22.0" prefHeight="28.0" prefWidth="183.0" promptText="Select Customer" styleClass="combo-box" />
     <TextField fx:id="txtItemName" editable="false" layoutX="13.0" layoutY="129.0" styleClass="text-field" />
+   <Label fx:id="lblOrderId" alignment="CENTER_RIGHT" layoutX="391.0" layoutY="12.0" prefHeight="31.0" prefWidth="183.0" styleClass="header-label" text="Order Id" textAlignment="RIGHT" />
 </AnchorPane>

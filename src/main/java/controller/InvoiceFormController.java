@@ -3,18 +3,15 @@ package controller;
 import com.jfoenix.controls.JFXButton;
 import dto.CustomerDto;
 import dto.ItemDto;
+import dto.OrderDetailsDto;
+import dto.OrderDto;
 import dto.tm.CartTm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import javafx.scene.paint.Color;
@@ -22,11 +19,15 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import model.Customer;
 import model.Item;
+import model.OrderModel;
 import model.impl.CustomerImpl;
 import model.impl.ItemImpl;
+import model.impl.OrderImpl;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -36,6 +37,7 @@ public class InvoiceFormController implements Initializable {
     @FXML
     public Label lblCustomerName;
     public TextField txtItemName;
+    public Label lblOrderId;
 
     @FXML
     private Button addToCartButton;
@@ -82,13 +84,19 @@ public class InvoiceFormController implements Initializable {
     private double total = 0.0;
 
 
-    private List<CartTm> cartList = new ArrayList<>();
+    private String orderId ="";
 
-    private Customer customer = new CustomerImpl();
-    private Item item = new ItemImpl();
+
+    private final List<CartTm> cartList = new ArrayList<>();
+
+    private final Customer customer = new CustomerImpl();
+
+    private final OrderModel order = new OrderImpl();
+    private final Item item = new ItemImpl();
 
     private List<CustomerDto> customerList = new ArrayList<>();
     private List<ItemDto> itemList = new ArrayList<>();
+    private String customerId;
 
 
     @FXML
@@ -102,57 +110,110 @@ public class InvoiceFormController implements Initializable {
 
 
         CartTm cartItem = new CartTm(
-
-                cmbItem.getValue().getCode(),
-                txtItemName.getText(),
-                Double.parseDouble(unitPrice.getText()),
-                Integer.parseInt(quantity.getText()),
-                amount,
-                deleteButton
+                    cmbItem.getValue().getCode(),
+                    txtItemName.getText(),
+                    Double.parseDouble(unitPrice.getText()),
+                    Integer.parseInt(quantity.getText()),
+                    amount,
+                    deleteButton
         );
 
 
         deleteButton.setOnAction(actionEvent -> {
             cartList.remove(cartItem);
             total -= cartItem.getAmount();
-            totalLabel.setText(String.format("%.2f",total));
+            totalLabel.setText(String.format("%.2f", total));
             cartTable.setItems(FXCollections.observableArrayList(cartList));
 
         });
 
         boolean isExsists = false;
 
-        for(CartTm item : cartList){
-            if(item.getItemId().equals(cartItem.getItemId()) && (item.getUnitPrice() == cartItem.getUnitPrice() )){
-                item.setQty(item.getQty()+cartItem.getQty());
+        for (CartTm item : cartList) {
+            if (item.getItemId().equals(cartItem.getItemId()) && (item.getUnitPrice() == cartItem.getUnitPrice())) {
+                item.setQty(item.getQty() + cartItem.getQty());
                 isExsists = true;
             }
         }
 
-        if(isExsists){
+        if (isExsists) {
 
             total += cartItem.getAmount();
-            totalLabel.setText(String.format("%.2f",total));
+            totalLabel.setText(String.format("%.2f", total));
             cartTable.refresh();
-
             return;
+
         }
 
         cartList.add(cartItem);
         total += cartItem.getAmount();
-        totalLabel.setText(String.format("%.2f",total));
+        totalLabel.setText(String.format("%.2f", total));
         cartTable.setItems(FXCollections.observableArrayList(cartList));
 
+
+    }
+
+
+    private void generateOrderId() {
+
+        try {
+            OrderDto orderDto = order.lastOrder();
+            if (orderDto != null) {
+                int num = Integer.parseInt(orderDto.getOrderId().split("D")[1]);
+                num++;
+                orderId = String.format("D%03d", num);
+                lblOrderId.setText(orderId);
+
+            } else {
+                orderId = "D001";
+                lblOrderId.setText(orderId);
+            }
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
     @FXML
     void placeOrder(ActionEvent event) {
 
+        List<OrderDetailsDto> orderDetailsList = new ArrayList<>();
+
+        for (CartTm cartTm : cartList) {
+            orderDetailsList.add(
+                    new OrderDetailsDto(
+                            orderId,
+                            cartTm.getItemId(),
+                            cartTm.getQty(),
+                            cartTm.getUnitPrice()
+                    )
+            );
+        }
+
+        try {
+         boolean isOrderSaved =  order.saveOrder(
+            new OrderDto(
+                 orderId,
+                 DateTimeFormatter.ofPattern("yyyy/MM/dd").format(LocalDateTime.now()),
+                 customerId,
+                 orderDetailsList
+                    ));
+
+         if(isOrderSaved){
+             new Alert(Alert.AlertType.INFORMATION, "Order placed").show();
+         }else{
+             new Alert(Alert.AlertType.ERROR, "Order placed Failed").show();
+         }
+
+
+
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Order placed Failed").show();
+            throw new RuntimeException(e);
+        }
     }
-
-
-
 
 
     @Override
@@ -167,9 +228,17 @@ public class InvoiceFormController implements Initializable {
 
         getAllCustomersName();
         getAllItemsCode();
+        generateOrderId();
 
         cmbCustomer.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) ->
-                lblCustomerName.setText(newValue.getName()));
+                {
+                    lblCustomerName.setText(newValue.getName());
+                    customerId = newValue.getId();
+                }
+
+
+        );
+
 
         cmbItem.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) ->
                 {

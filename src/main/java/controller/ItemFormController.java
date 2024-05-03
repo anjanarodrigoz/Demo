@@ -1,8 +1,11 @@
 package controller;
 
 import dto.ItemDto;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,9 +19,11 @@ import model.impl.ItemImpl;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 public class ItemFormController implements Initializable {
 
+    public TextField txtSearch;
     @FXML
     private TableColumn<?, ?> colItemPrice;
 
@@ -127,6 +132,25 @@ public class ItemFormController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        txtSearch.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String start, String end) {
+
+                FilteredList<ItemDto> filtered = itemList.filtered(new Predicate<ItemDto>() {
+                    @Override
+                    public boolean test(ItemDto itemDto) {
+
+
+                        return itemDto.getCode().toLowerCase().contains(end.toLowerCase()) || itemDto.getName().toLowerCase().contains(end.toLowerCase());
+
+                    }
+   });
+                itemTable.setItems(filtered);
+
+
+            }
+        });
 
         colItemCode.setCellValueFactory(new PropertyValueFactory<>("code"));
         colItemName.setCellValueFactory(new PropertyValueFactory<>("name"));
