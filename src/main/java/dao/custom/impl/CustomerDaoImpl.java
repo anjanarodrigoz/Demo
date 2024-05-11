@@ -1,14 +1,15 @@
-package dao.impl;
+package dao.custom.impl;
 
 import db.Database;
 import dto.CustomerDto;
-import dao.Customer;
+import dao.custom.CustomerDao;
+import entity.Customer;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerImpl implements Customer {
+public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public CustomerDto getCustomer(String customerId) throws SQLException {
@@ -25,58 +26,60 @@ public class CustomerImpl implements Customer {
             );
     }
 
-    @Override
-    public boolean saveCustomer(CustomerDto customerDto) throws SQLException {
 
+    @Override
+    public boolean save(Customer entity) throws SQLException {
         String query = "INSERT INTO customer(id,name,mobileNumber,email) VALUES (?,?,?,?)";
         PreparedStatement stm = Database.getInstance().getConnection().prepareStatement(query);
 
-        stm.setString(1,customerDto.getId());
-        stm.setString(2,customerDto.getName());
-        stm.setString(3,customerDto.getMobileNumber());
-        stm.setString(4,customerDto.getEmailAddress());
+        stm.setString(1,entity.getId());
+        stm.setString(2,entity.getName());
+        stm.setString(3,entity.getMobileNumber());
+        stm.setString(4,entity.getEmail());
 
         return  stm.executeUpdate()>0;
-
     }
 
     @Override
-    public boolean updateCustomer(CustomerDto customerDto) throws SQLException {
-
+    public boolean update(Customer entity) throws SQLException {
         String query = "UPDATE customer SET name=?, mobileNumber=?, email=? WHERE id =?";
 
         PreparedStatement stm = Database.getInstance().getConnection().prepareStatement(query);
 
-        stm.setString(1,customerDto.getName());
-        stm.setString(2,customerDto.getMobileNumber());
-        stm.setString(3,customerDto.getEmailAddress());
-        stm.setString(4,customerDto.getId());
+        stm.setString(1,entity.getName());
+        stm.setString(2,entity.getMobileNumber());
+        stm.setString(3,entity.getEmail());
+        stm.setString(4,entity.getId());
 
         return  stm.executeUpdate()>0;
+
     }
 
     @Override
-    public boolean deleteCustomer(String customerId) throws SQLException {
+    public boolean delete(String value) throws SQLException {
+
 
         String query = "DELETE FROM customer WHERE id = ?";
         PreparedStatement stm = Database.getInstance().getConnection().prepareStatement(query);
-        stm.setString(1,customerId);
+        stm.setString(1,value);
 
         return  stm.executeUpdate()>0;
+
     }
 
     @Override
-    public List<CustomerDto> getAllCustomers()  {
-        List<CustomerDto> customerDtoList = new ArrayList<>();
+    public List<Customer> getAll() throws SQLException {
+
+        List<Customer> customerList = new ArrayList<>();
 
         String query = "SELECT * FROM customer";
 
-        try {
+
             PreparedStatement stm = Database.getInstance().getConnection().prepareStatement(query);
             ResultSet resultSet =  stm.executeQuery();
             while (resultSet.next()){
 
-                customerDtoList.add(new CustomerDto(
+                customerList.add(new Customer(
                         resultSet.getString(1),
                         resultSet.getString(2),
                         resultSet.getString(3),
@@ -84,12 +87,9 @@ public class CustomerImpl implements Customer {
                 ));
 
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
 
-        return  customerDtoList;
 
+        return  customerList;
     }
 }

@@ -1,4 +1,6 @@
 package controller;
+import bo.custom.CustomerBo;
+import bo.custom.impl.CustomerBoImpl;
 import com.gluonhq.charm.glisten.control.Icon;
 import com.jfoenix.controls.JFXTextField;
 import dto.CustomerDto;
@@ -14,11 +16,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import dao.Customer;
-import dao.impl.CustomerImpl;
+import dao.custom.CustomerDao;
+import dao.custom.impl.CustomerDaoImpl;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -53,7 +56,7 @@ public class CustomerFormController implements Initializable {
     ObservableList<CustomerDto> tmList = FXCollections.observableArrayList();
 
 
-    Customer customer = new CustomerImpl();
+    CustomerBo<CustomerDto> customerBo = new CustomerBoImpl();
 
 
     @FXML
@@ -61,9 +64,14 @@ public class CustomerFormController implements Initializable {
 
         CustomerDto customerDto = getInputCustomer();
         try {
-            customer.saveCustomer(customerDto);
-            loadCustomer();
-            new Alert(Alert.AlertType.INFORMATION,"Customer added successfully").show();
+            if(customerBo.saveCustomer(customerDto)) {
+                ;
+                loadCustomer();
+                new Alert(Alert.AlertType.INFORMATION, "Customer added successfully").show();
+            }
+            else {
+                new Alert(Alert.AlertType.ERROR,"Customer added Failed").show();
+            }
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR,"Customer added Failed").show();
         }
@@ -102,23 +110,29 @@ public class CustomerFormController implements Initializable {
 
         tmList.clear();
 
-       List<CustomerDto> customerList =  customer.getAllCustomers();
+        try {
+            List<CustomerDto>  customerList = customerBo.getAllCustomers();
 
-       for (CustomerDto customerDto : customerList){
-
-           tmList.add(customerDto);
-       }
+            tmList.addAll(customerList);
 
 
-        customerTable.setItems(tmList);
+            customerTable.setItems(tmList);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void deleteCustomerOnAction(ActionEvent actionEvent) {
 
         try {
-            customer.deleteCustomer(customerIdField.getText());
+          if(customerBo.deleteCustomer(customerIdField.getText())){
+              new Alert(Alert.AlertType.CONFIRMATION,"Customer deleted Successfully").show();
+          }else {
+              new Alert(Alert.AlertType.ERROR,"Customer deleted Failed").show();
+          }
         } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR,"Customer added Failed").show();
+            new Alert(Alert.AlertType.ERROR,"Customer deleted Failed").show();
         }
     }
 

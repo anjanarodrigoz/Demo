@@ -1,15 +1,15 @@
-package dao.impl;
+package dao.custom.impl;
 
 import db.Database;
 import dto.OrderDto;
-import dao.OrderModel;
+import dao.custom.OrderDao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class OrderImpl implements OrderModel {
+public class OrderDaoImpl implements OrderDao {
     @Override
     public boolean saveOrder(OrderDto orderDto) throws SQLException {
 
@@ -26,7 +26,7 @@ public class OrderImpl implements OrderModel {
             pstm.setString(2, orderDto.getDate());
             pstm.setString(3, orderDto.getCustomerId());
             if (pstm.executeUpdate() > 0) {
-                boolean isDetailsSaved = new OrderDetailsModelImpl().saveOrderDetails(orderDto.getOrderDetails());
+                boolean isDetailsSaved = new OrderDetailsDaoImpl().saveOrderDetails(orderDto.getOrderDetails());
                 if (isDetailsSaved) {
                     connection.commit();
                     return true;

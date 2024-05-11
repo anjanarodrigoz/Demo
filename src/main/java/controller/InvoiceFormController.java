@@ -1,5 +1,9 @@
 package controller;
 
+import bo.custom.CustomerBo;
+import bo.custom.ItemBo;
+import bo.custom.impl.CustomerBoImpl;
+import bo.custom.impl.ItemBoImpl;
 import com.jfoenix.controls.JFXButton;
 import dto.CustomerDto;
 import dto.ItemDto;
@@ -17,12 +21,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import dao.Customer;
-import dao.Item;
-import dao.OrderModel;
-import dao.impl.CustomerImpl;
-import dao.impl.ItemImpl;
-import dao.impl.OrderImpl;
+import dao.custom.OrderDao;
+import dao.custom.impl.OrderDaoImpl;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -89,10 +89,10 @@ public class InvoiceFormController implements Initializable {
 
     private final List<CartTm> cartList = new ArrayList<>();
 
-    private final Customer customer = new CustomerImpl();
+    private final CustomerBo<CustomerDto> customer = new CustomerBoImpl();
 
-    private final OrderModel order = new OrderImpl();
-    private final Item item = new ItemImpl();
+    private final OrderDao order = new OrderDaoImpl();
+    private final ItemBo itemBo = new ItemBoImpl();
 
     private List<CustomerDto> customerList = new ArrayList<>();
     private List<ItemDto> itemList = new ArrayList<>();
@@ -255,7 +255,7 @@ public class InvoiceFormController implements Initializable {
     private void getAllItemsCode() {
 
         try {
-            itemList = item.getAllItems();
+            itemList = itemBo.getAllItems();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -269,12 +269,18 @@ public class InvoiceFormController implements Initializable {
 
     private void getAllCustomersName() {
 
-        customerList = customer.getAllCustomers();
+        try {
+            customerList = customer.getAllCustomers();
+
 
         ObservableList<CustomerDto> customerIdList = FXCollections.observableArrayList(customerList);
 
 
         cmbCustomer.setItems(customerIdList);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 

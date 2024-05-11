@@ -1,5 +1,7 @@
 package controller;
 
+import bo.custom.ItemBo;
+import bo.custom.impl.ItemBoImpl;
 import dto.ItemDto;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -14,8 +16,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import dao.Item;
-import dao.impl.ItemImpl;
+
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -52,7 +53,7 @@ public class ItemFormController implements Initializable {
     private TextField quantityField;
 
 
-    private final Item item = new ItemImpl();
+    private final ItemBo itemBo = new ItemBoImpl();
 
     private final ObservableList<ItemDto> itemList = FXCollections.observableArrayList();
 
@@ -61,7 +62,7 @@ public class ItemFormController implements Initializable {
 
         ItemDto itemDto =  getValues();
         try {
-           if( item.saveItem(itemDto)){
+           if( itemBo.saveItem(itemDto)){
                loadItem();
                new Alert(Alert.AlertType.INFORMATION,"Item saved Successfully").show();
            }else{
@@ -91,7 +92,7 @@ public class ItemFormController implements Initializable {
         ItemDto dto = getValues();
 
         try {
-            if(item.deleteItem(dto.getCode())){
+            if(itemBo.deleteItem(dto.getCode())){
                 loadItem();
                 new Alert(Alert.AlertType.INFORMATION,"Item delete Successfully").show();
             }
@@ -110,7 +111,7 @@ public class ItemFormController implements Initializable {
         ItemDto dto = getValues();
 
         try {
-            if(item.updateItem(dto)){
+            if(itemBo.updateItem(dto)){
                 loadItem();
                 new Alert(Alert.AlertType.INFORMATION,"Item updated Successfully").show();
             }
@@ -184,7 +185,7 @@ public class ItemFormController implements Initializable {
         itemList.clear();
         try {
 
-         itemList.addAll(item.getAllItems());
+         itemList.addAll(itemBo.getAllItems());
          itemTable.setItems(itemList);
 
          }catch (SQLException e) {
