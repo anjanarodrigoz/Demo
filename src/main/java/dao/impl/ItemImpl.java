@@ -1,8 +1,8 @@
-package model.impl;
+package dao.impl;
 
 import db.Database;
 import dto.ItemDto;
-import model.Item;
+import dao.Item;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

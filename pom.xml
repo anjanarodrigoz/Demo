@@ -43,12 +43,7 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.32</version>
         </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-graphics</artifactId>
-            <version>21</version>
-        </dependency>
-        <dependency>
+       <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
             <version>19.0.2.1</version>
@@ -62,10 +57,16 @@
 
     </dependencies>
 
+    <build>
+        <plugins>
+
+        </plugins>
+    </build>
+
 
     <repositories>
         <repository>
-            <id>gluonhq</id>
+            <id>gluon</id>
             <url>https://nexus.gluonhq.com/nexus/content/repositories/releases/</url>
         </repository>
     </repositories>

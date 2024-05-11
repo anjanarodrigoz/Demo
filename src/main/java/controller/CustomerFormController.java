@@ -1,7 +1,6 @@
 package controller;
 import com.gluonhq.charm.glisten.control.Icon;
 import com.jfoenix.controls.JFXTextField;
-import db.Database;
 import dto.CustomerDto;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,15 +14,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import model.Customer;
-import model.impl.CustomerImpl;
+import dao.Customer;
+import dao.impl.CustomerImpl;
 
-import javax.management.Query;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 import java.util.ResourceBundle;
 

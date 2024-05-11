@@ -17,12 +17,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import model.Customer;
-import model.Item;
-import model.OrderModel;
-import model.impl.CustomerImpl;
-import model.impl.ItemImpl;
-import model.impl.OrderImpl;
+import dao.Customer;
+import dao.Item;
+import dao.OrderModel;
+import dao.impl.CustomerImpl;
+import dao.impl.ItemImpl;
+import dao.impl.OrderImpl;
 
 import java.net.URL;
 import java.sql.SQLException;

@@ -1,8 +1,8 @@
-package model.impl;
+package dao.impl;
 
 import db.Database;
 import dto.CustomerDto;
-import model.Customer;
+import dao.Customer;
 
 import java.sql.*;
 import java.util.ArrayList;
