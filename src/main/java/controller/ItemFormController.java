@@ -1,7 +1,9 @@
 package controller;
 
+import bo.BoFactory;
 import bo.custom.ItemBo;
 import bo.custom.impl.ItemBoImpl;
+import dao.util.BoType;
 import dto.ItemDto;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -53,8 +55,7 @@ public class ItemFormController implements Initializable {
     private TextField quantityField;
 
 
-    private final ItemBo itemBo = new ItemBoImpl();
-
+    private final ItemBo itemBo = BoFactory.getInstance().getBo(BoType.ITEM);
     private final ObservableList<ItemDto> itemList = FXCollections.observableArrayList();
 
     @FXML
@@ -101,6 +102,7 @@ public class ItemFormController implements Initializable {
             }
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR,"Item delete Failed").show();
+            e.printStackTrace();
         }
 
     }

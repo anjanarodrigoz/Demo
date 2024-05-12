@@ -6,11 +6,11 @@ import dto.ItemDto;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface ItemBo<T> extends SuperBo{
+public interface ItemBo extends SuperBo{
 
-    boolean saveItem(T dto) throws SQLException;
+    boolean saveItem(ItemDto dto) throws SQLException;
 
-    boolean updateItem(T dto) throws SQLException;
+    boolean updateItem(ItemDto dto) throws SQLException;
 
     boolean deleteItem(String itemCode) throws SQLException;
 

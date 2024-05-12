@@ -1,5 +1,6 @@
 package dao.custom.impl;
 
+import dao.util.CrudUtil;
 import db.Database;
 import dto.ItemDto;
 import dao.custom.ItemDao;
@@ -38,14 +39,12 @@ public class ItemDaoImpl implements ItemDao {
 
         String sql = "INSERT INTO item(id,name,qty,price) VALUES (?,?,?,?)";
 
-        PreparedStatement pstm = Database.getInstance().getConnection().prepareStatement(sql);
 
-        pstm.setString(1,entity.getId());
-        pstm.setString(2,entity.getName());
-        pstm.setInt(3,entity.getQty());
-        pstm.setDouble(4,entity.getPrice());
-
-        return pstm.executeUpdate()>0;
+        return CrudUtil.execute(sql,
+                entity.getId(),
+                entity.getName(),
+                entity.getQty(),
+                entity.getPrice());
 
     }
 
@@ -53,23 +52,21 @@ public class ItemDaoImpl implements ItemDao {
     public boolean update(Item entity) throws SQLException {
         String sql = "UPDATE item SET name = ? ,qty = ? , price = ? WHERE id = ?";
 
-        PreparedStatement pstm = Database.getInstance().getConnection().prepareStatement(sql);
 
-        pstm.setString(1,entity.getName());
-        pstm.setInt(2,entity.getQty());
-        pstm.setDouble(3,entity.getPrice());
-        pstm.setString(4,entity.getId());
 
-        return pstm.executeUpdate()>0;
+        return CrudUtil.execute(sql,
+                entity.getName(),
+                entity.getQty(),
+                entity.getPrice(),
+                entity.getId());
 
     }
 
     @Override
     public boolean delete(String value) throws SQLException {
         String sql = "DELETE FROM item WHERE id=?";
-        PreparedStatement pstm = Database.getInstance().getConnection().prepareStatement(sql);
-        pstm.setString(1,value);
-        return pstm.executeUpdate() > 0;
+
+        return  CrudUtil.execute(sql,value);
 
     }
 
@@ -79,8 +76,7 @@ public class ItemDaoImpl implements ItemDao {
         List<Item> itmeEntityList = new ArrayList<>();
 
         String sql = "SELECT * FROM item";
-        PreparedStatement pstm = Database.getInstance().getConnection().prepareStatement(sql);
-        ResultSet resultSet = pstm.executeQuery();
+        ResultSet resultSet = CrudUtil.execute(sql);
 
         while (resultSet.next()){
 

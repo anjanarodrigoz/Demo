@@ -1,9 +1,12 @@
 package controller;
+import bo.BoFactory;
 import bo.custom.CustomerBo;
 import bo.custom.impl.CustomerBoImpl;
 import com.gluonhq.charm.glisten.control.Icon;
 import com.jfoenix.controls.JFXTextField;
+import dao.util.BoType;
 import dto.CustomerDto;
+import dto.ItemDto;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -56,7 +59,7 @@ public class CustomerFormController implements Initializable {
     ObservableList<CustomerDto> tmList = FXCollections.observableArrayList();
 
 
-    CustomerBo<CustomerDto> customerBo = new CustomerBoImpl();
+    CustomerBo customerBo = BoFactory.getInstance().getBo(BoType.CUSTOMER);
 
 
     @FXML
@@ -65,7 +68,6 @@ public class CustomerFormController implements Initializable {
         CustomerDto customerDto = getInputCustomer();
         try {
             if(customerBo.saveCustomer(customerDto)) {
-                ;
                 loadCustomer();
                 new Alert(Alert.AlertType.INFORMATION, "Customer added successfully").show();
             }
@@ -103,6 +105,7 @@ public class CustomerFormController implements Initializable {
 
         loadCustomer();
 
+        viewData();
 
     }
 
@@ -128,6 +131,7 @@ public class CustomerFormController implements Initializable {
         try {
           if(customerBo.deleteCustomer(customerIdField.getText())){
               new Alert(Alert.AlertType.CONFIRMATION,"Customer deleted Successfully").show();
+              loadCustomer();
           }else {
               new Alert(Alert.AlertType.ERROR,"Customer deleted Failed").show();
           }
@@ -137,6 +141,38 @@ public class CustomerFormController implements Initializable {
     }
 
     public void updateCustomerOnAction(ActionEvent actionEvent) {
+
+        CustomerDto customerDto = getInputCustomer();
+
+        try {
+            if(customerBo.updateCustomer(customerDto)) {
+                loadCustomer();
+                new Alert(Alert.AlertType.INFORMATION, "Customer updated successfully").show();
+            }
+            else {
+                new Alert(Alert.AlertType.ERROR,"Customer updated Failed").show();
+            }
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR,"Customer updated Failed").show();
+        }
+
+    }
+
+
+    private void viewData() {
+
+        customerTable.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 1 && !customerTable.getSelectionModel().isEmpty()) {
+                // Get selected item
+                CustomerDto customerDto = customerTable.getSelectionModel().getSelectedItem();
+
+                // Access data
+                customerNameField.setText(customerDto.getName());
+                customerIdField.setText(customerDto.getId());
+                emailField.setText(customerDto.getEmailAddress());
+                mobileNumberField.setText(customerDto.getMobileNumber());
+            }
+        });
     }
 }
 

@@ -26,6 +26,6 @@
          <Font name="Arial Hebrew Scholar Bold" size="13.0" />
       </font>
    </JFXButton>
-   <JFXButton onAction="#deleteCustomerOnAction" layoutX="680.0" layoutY="86.0" prefHeight="30.0" prefWidth="97.0" style="-fx-background-color: #FFB100;" text="Update" textFill="WHITE" />
-   <JFXButton onAction="#updateCustomerOnAction" layoutX="679.0" layoutY="130.0" prefHeight="30.0" prefWidth="97.0" style="-fx-background-color: #FF0000;" text="Delete" textFill="WHITE" />
+   <JFXButton onAction="#updateCustomerOnAction" layoutX="680.0" layoutY="86.0" prefHeight="30.0" prefWidth="97.0" style="-fx-background-color: #FFB100;" text="Update" textFill="WHITE" />
+   <JFXButton onAction="#deleteCustomerOnAction" layoutX="679.0" layoutY="130.0" prefHeight="30.0" prefWidth="97.0" style="-fx-background-color: #FF0000;" text="Delete" textFill="WHITE" />
 </AnchorPane>

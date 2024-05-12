@@ -2,8 +2,10 @@ package controller;
 
 import bo.custom.CustomerBo;
 import bo.custom.ItemBo;
+import bo.custom.OrderBo;
 import bo.custom.impl.CustomerBoImpl;
 import bo.custom.impl.ItemBoImpl;
+import bo.custom.impl.OrderBoImpl;
 import com.jfoenix.controls.JFXButton;
 import dto.CustomerDto;
 import dto.ItemDto;
@@ -21,8 +23,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import dao.custom.OrderDao;
-import dao.custom.impl.OrderDaoImpl;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -89,9 +89,9 @@ public class InvoiceFormController implements Initializable {
 
     private final List<CartTm> cartList = new ArrayList<>();
 
-    private final CustomerBo<CustomerDto> customer = new CustomerBoImpl();
+    private final CustomerBo customer = new CustomerBoImpl();
 
-    private final OrderDao order = new OrderDaoImpl();
+    private final OrderBo orderBo = new OrderBoImpl();
     private final ItemBo itemBo = new ItemBoImpl();
 
     private List<CustomerDto> customerList = new ArrayList<>();
@@ -154,27 +154,7 @@ public class InvoiceFormController implements Initializable {
     }
 
 
-    private void generateOrderId() {
 
-        try {
-            OrderDto orderDto = order.lastOrder();
-            if (orderDto != null) {
-                int num = Integer.parseInt(orderDto.getOrderId().split("D")[1]);
-                num++;
-                orderId = String.format("D%03d", num);
-                lblOrderId.setText(orderId);
-
-            } else {
-                orderId = "D001";
-                lblOrderId.setText(orderId);
-            }
-
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
 
     @FXML
     void placeOrder(ActionEvent event) {
@@ -193,7 +173,7 @@ public class InvoiceFormController implements Initializable {
         }
 
         try {
-         boolean isOrderSaved =  order.saveOrder(
+         boolean isOrderSaved =  orderBo.saveOrder(
             new OrderDto(
                  orderId,
                  DateTimeFormatter.ofPattern("yyyy/MM/dd").format(LocalDateTime.now()),
@@ -249,6 +229,17 @@ public class InvoiceFormController implements Initializable {
 
 
         );
+
+    }
+
+    private void generateOrderId() {
+
+        try {
+            String orderId =  orderBo.generateOrderId();
+            lblOrderId.setText(orderId);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 

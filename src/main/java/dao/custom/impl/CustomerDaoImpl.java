@@ -1,5 +1,6 @@
 package dao.custom.impl;
 
+import dao.util.CrudUtil;
 import db.Database;
 import dto.CustomerDto;
 import dao.custom.CustomerDao;
@@ -30,28 +31,22 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public boolean save(Customer entity) throws SQLException {
         String query = "INSERT INTO customer(id,name,mobileNumber,email) VALUES (?,?,?,?)";
-        PreparedStatement stm = Database.getInstance().getConnection().prepareStatement(query);
-
-        stm.setString(1,entity.getId());
-        stm.setString(2,entity.getName());
-        stm.setString(3,entity.getMobileNumber());
-        stm.setString(4,entity.getEmail());
-
-        return  stm.executeUpdate()>0;
+       return CrudUtil.execute(query,
+               entity.getId(),
+               entity.getName(),
+               entity.getMobileNumber(),
+               entity.getEmail());
     }
 
     @Override
     public boolean update(Customer entity) throws SQLException {
         String query = "UPDATE customer SET name=?, mobileNumber=?, email=? WHERE id =?";
 
-        PreparedStatement stm = Database.getInstance().getConnection().prepareStatement(query);
-
-        stm.setString(1,entity.getName());
-        stm.setString(2,entity.getMobileNumber());
-        stm.setString(3,entity.getEmail());
-        stm.setString(4,entity.getId());
-
-        return  stm.executeUpdate()>0;
+        return CrudUtil.execute(query,
+                entity.getName(),
+                entity.getMobileNumber(),
+                entity.getEmail(),
+                entity.getId());
 
     }
 
@@ -60,10 +55,9 @@ public class CustomerDaoImpl implements CustomerDao {
 
 
         String query = "DELETE FROM customer WHERE id = ?";
-        PreparedStatement stm = Database.getInstance().getConnection().prepareStatement(query);
-        stm.setString(1,value);
 
-        return  stm.executeUpdate()>0;
+
+        return  CrudUtil.execute(query,value);
 
     }
 
@@ -74,9 +68,8 @@ public class CustomerDaoImpl implements CustomerDao {
 
         String query = "SELECT * FROM customer";
 
+            ResultSet resultSet =  CrudUtil.execute(query);
 
-            PreparedStatement stm = Database.getInstance().getConnection().prepareStatement(query);
-            ResultSet resultSet =  stm.executeQuery();
             while (resultSet.next()){
 
                 customerList.add(new Customer(
@@ -87,6 +80,8 @@ public class CustomerDaoImpl implements CustomerDao {
                 ));
 
             }
+
+
 
 
 
