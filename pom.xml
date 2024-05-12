@@ -48,12 +48,17 @@
             <artifactId>javafx-graphics</artifactId>
             <version>19.0.2.1</version>
         </dependency>
-         <dependency>
+        <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>1.18.20</version> <!-- Use the latest version -->
                 <scope>provided</scope>
-            </dependency>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>5.6.15.Final</version>
+        </dependency>
 
     </dependencies>
 
