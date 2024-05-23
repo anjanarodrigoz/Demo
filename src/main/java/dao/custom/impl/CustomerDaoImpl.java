@@ -1,6 +1,7 @@
 package dao.custom.impl;
 
 import dao.util.CrudUtil;
+import dao.util.HibernateUtil;
 import db.Database;
 import dto.CustomerDto;
 import dao.custom.CustomerDao;
@@ -9,6 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -35,11 +37,8 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public boolean save(Customer entity) throws SQLException {
 
-        Configuration configuration = new Configuration().configure("hibernate.cfg.xml")
-                .addAnnotatedClass(Customer.class);
 
-        SessionFactory sessionFactory = configuration.buildSessionFactory();
-        Session session = sessionFactory.openSession();
+        Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
         session.save(entity);
         transaction.commit();
@@ -50,10 +49,8 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public boolean update(Customer entity) throws SQLException {
 
-        Configuration configuration = new Configuration().configure("hibernate.cfg.xml")
-                .addAnnotatedClass(Customer.class);
-        SessionFactory sessionFactory = configuration.buildSessionFactory();
-        Session session = sessionFactory.openSession();
+
+        Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
 
         Customer customer = session.find(Customer.class, entity.getId());
@@ -72,11 +69,8 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public boolean delete(String value) throws SQLException {
 
-        Configuration configuration = new Configuration().configure("hibernate.cfg.xml")
-                .addAnnotatedClass(Customer.class);
 
-        SessionFactory sessionFactory = configuration.buildSessionFactory();
-        Session session = sessionFactory.openSession();
+        Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
         Customer customer = session.find(Customer.class, value);
         session.delete(customer);
@@ -91,33 +85,11 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public List<Customer> getAll() throws SQLException {
 
-        List<Customer> customerList = new ArrayList<>();
-
-//        Configuration configuration = new Configuration().configure("hibernate.cfg.xml")
-//                .addAnnotatedClass(Customer.class);
-//
-//        SessionFactory sessionFactory = configuration.buildSessionFactory();
-//        Session session = sessionFactory.openSession();
-//        Transaction transaction = session.beginTransaction();
 
 
-        String query = "SELECT * FROM customer";
-
-            ResultSet resultSet =  CrudUtil.execute(query);
-
-            while (resultSet.next()){
-
-                customerList.add(new Customer(
-                        resultSet.getString(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        resultSet.getString(4)
-                ));
-
-            }
-
-
-
+        Session session = HibernateUtil.getSession();
+        Query query = session.createQuery("From Customer");
+        List<Customer> customerList = query.list();
 
 
         return  customerList;
