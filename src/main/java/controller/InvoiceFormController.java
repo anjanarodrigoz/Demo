@@ -237,6 +237,7 @@ public class InvoiceFormController implements Initializable {
         try {
             String orderId =  orderBo.generateOrderId();
             lblOrderId.setText(orderId);
+            this.orderId = orderId;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

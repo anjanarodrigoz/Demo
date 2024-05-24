@@ -16,6 +16,7 @@ import java.util.List;
 public class Orders {
 
     @Id
+    @Column(nullable = false)
     private String id;
     private String date;
 
@@ -26,9 +27,8 @@ public class Orders {
     @OneToMany(mappedBy = "orders")
     private List<OrderDetails> ordersDetailList = new ArrayList<>();
 
-    public Orders(String id, String date, String customer_id) {
+    public Orders(String id, String date) {
         this.id = id;
         this.date = date;
-
     }
 }

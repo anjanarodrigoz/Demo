@@ -4,7 +4,6 @@ package entity;
 import lombok.*;
 
 import javax.persistence.*;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

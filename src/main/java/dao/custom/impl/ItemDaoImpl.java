@@ -1,10 +1,15 @@
 package dao.custom.impl;
 
 import dao.util.CrudUtil;
+import dao.util.HibernateUtil;
 import db.Database;
 import dto.ItemDto;
 import dao.custom.ItemDao;
+import entity.Customer;
 import entity.Item;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,58 +42,45 @@ public class ItemDaoImpl implements ItemDao {
     @Override
     public boolean save(Item entity) throws SQLException {
 
-        String sql = "INSERT INTO item(id,name,qty,price) VALUES (?,?,?,?)";
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        session.save(entity);
+        transaction.commit();
+        session.close();
+        return  true;
 
-
-        return CrudUtil.execute(sql,
-                entity.getId(),
-                entity.getName(),
-                entity.getQty(),
-                entity.getPrice());
 
     }
 
     @Override
     public boolean update(Item entity) throws SQLException {
-        String sql = "UPDATE item SET name = ? ,qty = ? , price = ? WHERE id = ?";
 
-
-
-        return CrudUtil.execute(sql,
-                entity.getName(),
-                entity.getQty(),
-                entity.getPrice(),
-                entity.getId());
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        Item item = session.find(Item.class,entity.getId());
+        item.setName(entity.getName());
+        item.setQty(entity.getQty());
+        item.setPrice(entity.getPrice());
+        session.update(item);
+        transaction.commit();
+        session.close();
+        return  true;
 
     }
 
     @Override
     public boolean delete(String value) throws SQLException {
-        String sql = "DELETE FROM item WHERE id=?";
 
-        return  CrudUtil.execute(sql,value);
-
+return false;
     }
 
     @Override
     public List<Item> getAll() throws SQLException {
 
-        List<Item> itmeEntityList = new ArrayList<>();
+        Session session = HibernateUtil.getSession();
+        Query fromItem = session.createQuery("From Item");
+        List<Item> itemList = fromItem.list();
 
-        String sql = "SELECT * FROM item";
-        ResultSet resultSet = CrudUtil.execute(sql);
-
-        while (resultSet.next()){
-
-            itmeEntityList.add(
-                    new Item(
-                            resultSet.getString(1),
-                            resultSet.getString(2),
-                            resultSet.getInt(3),
-                            resultSet.getDouble(4)
-                    ));
-        }
-
-        return itmeEntityList;
+        return itemList;
     }
 }

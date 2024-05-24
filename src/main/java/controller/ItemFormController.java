@@ -146,10 +146,11 @@ public class ItemFormController implements Initializable {
 
 
                         return itemDto.getCode().toLowerCase().contains(end.toLowerCase()) || itemDto.getName().toLowerCase().contains(end.toLowerCase());
-
                     }
-   });
-                itemTable.setItems(filtered);
+              });
+
+            itemTable.setItems(filtered);
+
 
 
             }

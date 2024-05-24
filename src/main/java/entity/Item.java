@@ -21,6 +21,7 @@ public class Item {
     private int qty;
     private double price;
 
+
     @OneToMany(mappedBy = "item")
     List<OrderDetails> orderDetailsList = new ArrayList<>();
 

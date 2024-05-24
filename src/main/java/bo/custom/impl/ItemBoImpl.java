@@ -17,7 +17,8 @@ public class ItemBoImpl implements ItemBo{
     ItemDao itemDao = DaoFactory.getInstance().getDao(DaoType.ITEM);
     @Override
     public boolean saveItem(ItemDto dto) throws SQLException {
-        return itemDao.save(new Item(
+        return itemDao.save(
+                new Item(
                 dto.getCode(),
                 dto.getName(),
                 dto.getQty(),
